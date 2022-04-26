@@ -1,0 +1,63 @@
+TAD Tec Es Nat
+TAD Dir Es String
+
+TAD TaD
+  Igualdad Observacional:	(∀t₀,t₁: tad)
+        						(t₀ =obs t₁ ⇐⇒ 
+  								(disponibles(t₀) =obs disponibles(t₁) ∧ ocupados(t₀) =obs ocupados(t₁) ∧ pendientes(t₀) =obs pendientes(t₁) ∧ direccionesMasVisitadas(t₀) =obs direccionesMasVisitadas(t₁) ∧ 
+  									(∀te: tec)(te ∈ ocupados(t₀) ⇒L ubicacion(te, t₀) =obs ubicacion(te, t₁))));
+	Géneros: tad
+	Exporta: tad, observadores, generadores, otras operaciones,
+	Usa: Bool, Nat, Tec, Dir
+	
+	Observadores Básicos:
+		disponibles: 									tad								 		-> conj(tec) 	
+		ocupados: 	 									tad 									-> conj(tec)
+		pendientes:  								  tad 									-> secu(dir)
+		ubicacion: 	 									tec te × tad t 		 		-> dir        		{te ∈ ocupados(t)}
+		direccionesMasVisitadas:			tad 	 								-> dicc(dir, nat)	
+	Generadores:
+		crear:			 									conj(tec) ct					-> tad    				{¬Ø?(ct)}
+		solicitar: 	 									direccion d × tad t 	-> tad 
+		terminar: 	 									tec te × tad t 		 		-> tad    				{te ∈ ocupados(t)}
+	Otras Operaciones:
+		sacarDeLaSecuencia: 					dir d × secu(dir) 		-> secu(dir)
+		tomarElMasCercanoYMasAntiguo:	tec te × secu(dir) sd	-> dir 					
+	Axiomas: ∀ct: conj(tec), ∀d: dir, ∀te,te': tec, ∀sd: secu(dir), ∀t: tad
+		disponibles(crear(ct)) 			 				 		 ≡ ct
+		disponibles(solicitar(d, t)) 				 		 ≡ if ¬Ø?(disponibles(t)) then sinUno(disponibles(t)) else Ø fi
+		disponibles(terminar(te, t)) 				 		 ≡ if long(pendientes(t)) > 0 then disponibles(t) else Ag(te, disponibles(t)) fi 
+		
+		ocupados(crear(ct)) 				 				 		 ≡	Ø
+		ocupados(solicitar(d, t)) 	 				     ≡ if #disponibles(t) > 0 then Ag(dameUno(disponibles(t)), ocupados(t)) else ocupados(t) fi
+		ocupados(terminar(te, t)) 	 				 		 ≡ if long(pendientes(t)) > 0 then ocupados(t) else ocupados(t) - [te] fi
+		
+		pendientes(crear(ct)) 		   				 		 ≡ <>
+		pendientes(solicitar(d, t))  				 		 ≡ if #disponibles(t) > 0 then <> else pendientes(t) ◦ d fi
+		pendientes(terminar(te, t))  				 		 ≡ if #disponibles(t) > 0 then		 				 	
+																							 	<> 
+																	 				 		 else
+																	 							sacarDeLaSecuencia(tomarElMasCercanoYMasAntiguo(te, pendientes(t)), pendientes(t))
+																					 		 fi 
+																					 
+		ubicacion(te, solicitar(d, t)) 			 		 ≡ ubicacion(te, t)
+	 	ubicacion(te, terminar(te', t)) 		 		 ≡ tomarElMasCercanoYMasAntiguo(te, pendientes(t))
+		
+		direccionesMasVisitadas(crear(ct))	 		 ≡ vacío
+		direccionesMasVisitadas(solicitar(d, t)) ≡ if def?(d, direccionesMasVisitadas(t)) then obtener(d, direccionesMasVisitadas(t)) + 1 else definir(d, 1, direccionesMasVisitadas(t)) fi
+		direccionesMasVisitadas(terminar(te, t)) ≡ direccionesMasVisitadas(t)
+																					
+		sacarDeLaSecuencia(d, sd)						 		 ≡ if d = prim(sd) then fin(sd) else prim(sd) • sacarDeLaSecuencia(d, fin(sd)) fi
+		
+		tomarElMasCercanoYMasAntiguo(te, sd) 		 ≡ if long(sd) = 1 then
+																							 	prim(sd)
+																					 		 else
+																					 			if dist(ubicacion(te, t), prim(sd)) < dist(ubicacion(te, t), prim(fin(sd))) then
+																					 				tomarElMasCercanoYMasAntiguo(te, fin(sd)) 
+																					 			else
+																					 				tomarElMasCercanoYMasAntiguo(te, prim(sd) • fin(fin(sd)))
+																					 			fi
+																							 fi
+	
+		
+Fin TAD

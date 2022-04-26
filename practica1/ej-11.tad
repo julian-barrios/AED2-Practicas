@@ -1,0 +1,72 @@
+TAD Stock
+	Igualdad Observacional:();
+	Géneros: stock
+	Exporta: stock, observadores, generadores, otras operaciones,
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		productos: 			 						stock    									 	-> conj(producto) 	
+		minimo: 	 			 						producto p × stock s				-> nat						{p ∈ productos(s)}
+		stockActual:		 						producto p × stock s 				-> nat 						{p ∈ productos(s)}
+		tieneSustituto?: 						producto p × stock s   			-> bool						{p ∈ productos(s)}
+		ventas: 				 						producto p × stock s 				-> nat						{p ∈ productos(s)}
+		compras: 				 						producto p × stock s 				-> nat						{p ∈ productos(s)}
+		sustituto:			 						producto p × stock s				-> producto				{p ∈ productos(s) ∧L tieneSustituto?(p, s)}
+	Generadores:
+		registrar: 			 						nat × producto	p × stock s	-> stock    			{p ∉ productos(s)}
+		comprar: 	  		 						nat × producto p × stock s 	-> stock    			{p ∈ productos(s)}
+		vender:  	 			 						nat × producto p × stock s	-> stock					{p ∈ productos(s)}
+		sustituir: 			 						producto × producto × stock -> stock
+	Otras Operaciones:
+		sinStock:				 						stock 											-> conj(producto) 
+		recorrerProductosSinStock: 	conj(producto) × stock 			-> conj(producto)
+	Axiomas:
+		productos(registrar(m, p, s))						 ≡ Ag(p, productos(s))	
+		productos(comprar(n, p, s))	 						 ≡ productos(s) 
+		productos(vender(n, p, s))	 						 ≡ productos(s)
+		producto(sustituir(p, q, s)) 						 ≡ productos(s)
+		
+		minimo(p, registrar(n, p', s)) 					 ≡ if p = p' then n else minimo(p, s) fi
+		minimo(p, comprar(n, p', s)) 	 					 ≡ minimo(p)
+		minimo(p, vender(n, p', s)) 	 					 ≡ minimo(p)
+		minimo(p, sustituir(p, p'', s)) 				 ≡ minimo(p)
+		
+		stockActual(p, registrar(n, p', s)) 		 ≡ if p = p' then n else stockActual(p, s) fi
+		stockActual(p, comprar(n, p', s)) 			 ≡ if p = p' then n else 0 fi + stockActual(p, s)
+		stockActual(p, vender(n, p', s)) 	  	 	 ≡ stockActual(p, s) - if p = p' then n else 0 fi
+		stockActual(p, sustituir(p, p'', s)) 		 ≡ 
+		
+		tieneSustituto?(p, registrar(n, p', s))  ≡ tieneSustituto?(p, s)
+		tieneSustituto?(p, comprar(n, p', s)) 	 ≡ tieneSustituto?(p, s)
+		tieneSustituto?(p, vender(n, p', s)) 	   ≡ tieneSustituto?(p, s)
+		tieneSustituto?(p, sustituir(p, p'', s)) ≡ tieneSustituto?(p, s)
+		
+		ventas(p, registrar(n, p', s)) 					 ≡ 0
+		ventas(p, comprar(n, p', s)) 						 ≡ ventas(p, s)
+		ventas(p, vender(n, p', s)) 	  				 ≡ if p = p' then n else 0 fi + ventas(p, s)
+		ventas(p, sustituir(p', p'', s)) 				 ≡ ventas(p, s)
+		
+		compras(p, registrar(n, p', s)) 				 ≡ 0
+		compras(p, comprar(n, p', s)) 					 ≡ if p = p' then n else 0 fi + compras(p, s)
+		compras(p, vender(n, p', s)) 	  				 ≡ compras(p, s)
+		compras(p, sustituir(p', p'', s)) 			 ≡ compras(p, s)
+		
+		sustituto(p, registrar(n, p', s)) 				 ≡ sustituto(p, s)
+		sustituto(p, comprar(n, p', s)) 					 ≡ sustituto(p, s)
+		sustituto(p, vender(n, p', s)) 	  				 ≡ sustituto(p, s)
+		sustituto(p, sustituir(p', p'', s)) 			≡ if p = p' then p'' else sustituto(p, s) fi
+		
+		sinStock(s)															 ≡ recorrerProductosSinStock(productos(s), s)
+		
+		recorrerProductosSinStock(cp, s)				 ≡ if Ø?(cp) then
+																								Ø
+																							else
+																								if (stockActual(dameUno(cp), s) < minimo(dameUno((cp)), s) && ¬tieneSustituto(dameUno(cp), s)) || ((stockActual(dameUno(cp), s) + stockActual(sustituto(dameUno(cp), s), s)) < minimo(dameUno((cp))) then
+																									Ag(dameUno(cp), recorrerProductosSinStock(sinUno(cp), s))
+																								else
+																									recorrerProductosSinStock(sinUno(cp), s)
+																								fi
+																							fi
+		
+		
+Fin TAD

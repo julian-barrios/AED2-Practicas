@@ -1,0 +1,42 @@
+
+/************** Item A ***************/
+
+
+function insertionSort(arreglo A)
+	int i, j, valor;													// O(1)
+	for i := 0 . . . Long(A) - 1 do						// Este for se ejecutará n veces por lo que la complejidad va a ser O(n) multiplicado por la complejidad de las operaciones internas del ciclo.
+		valor := A[i];													// O(1)
+		j := i - 1;															// O(1)
+		while j ≥ 0 ∧ a[j] > valor do						// En el peor caso, j tendrá un valor del orden de n, por lo que el while tendrá una complejidad de O(n) multiplicado por la complejidad de las
+																						// operaciones internas del ciclo. Que a[j] > valor no va a cambiar la complejidad mientras no haya ninguna precondición al respecto ya que
+																						// entonces podría suceder en peor caso que a[j] > valor para todo j entre 0 e i (o sea, que el arreglo original esté ordenado de mayor a menor).
+			A[j+1] := A[j];												// O(1)
+			j := j - 1;														// O(1)
+		end while
+		A[j+1] := valor;												// O(1)
+	end for
+end function
+
+
+Complejidad total O(n^2)
+
+
+/************** Item B ***************/
+
+
+function busquedaBinaria(arreglo A, elem valor)
+	int izq := 0, der := Long(A) - 1;										// O(1)
+	while izq < der do																	// La diferencia entre los valores de la guarda va disminuyendo a la mitad cada vez. En otras palabras, estamos dividiendo por 2 su valor en cada iteración, por
+																											// lo que la complejidad del ciclo va a ser O(log(n)) multiplicado por la complejidad de las operaciones internas del ciclo.
+		int medio := (izq + der) / 2;											// O(1)
+		if valor < A[medio] then													// O(1)		
+			der := medio;																		// O(1)
+		else																	
+			izq := medio;																		// O(1)
+		end if
+	end while
+	return A[izq] = valor;															// O(1)
+end function
+
+
+Complejidad total O(log(n))

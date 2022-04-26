@@ -1,0 +1,154 @@
+TAD Fila
+	Igualdad Observacional:	(∀f₀,f₁: fila)(f₀ =obs f₁ ⇐⇒ ((∀p: persona) (Esperando(p, f₀) =obs Esperando(p, f₁) ∧L
+																												Esperando(p, f₀) ⇒L Posición(p, f₀)  =obs Posición(p, f₁))));
+	Géneros: fila
+	Exporta: fila, observadores, generadores, 
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		Esperando:			 persona × fila			-> bool 
+		Posición: 			 persona p × fila f -> nat   	{Esperando(p, f)}
+	Generadores:
+		AbrirVentanilla: 										-> fila
+		Llegar: 				 persona p × fila f -> fila 	{¬Esperando(p, f)}
+		Atender: 				 fila f 						-> fila 	{¬Vacía(f)}
+	Otras Operaciones:
+		Vacía:					 fila 							-> bool 
+		Longitud: 			 fila 							-> nat
+	Axiomas:
+		Esperando(p, AbrirVentanilla) ≡ false 
+		Esperando(p, Llegar(p', f)) 	≡ p = p' ∨ Esperando(p, f)
+		Esperando(p, Atender(f)) 		 	≡ Esperando(p, f) ∧L Posición(p, f) ≠ 1
+		
+		Posición(p, Llegar(p', f))		≡ if p = p' then Longitud(f) + 1 else Posición(p, f) fi
+		Posición(p, Atender(f))			 	≡ Posición(p, f) - 1
+		
+		Vacía(f)									 		≡ Longitud(f) = 0
+		
+		Longitud(AbrirVentanilla)		  ≡ 0
+		Longitud(Llegar(p, f)) 				≡ Longitud(f) + 1
+		Longitud(Atender(f)) 					≡ Longitud(f) - 1
+		
+Fin TAD
+
+TAD Fila Dinámica
+	Igualdad Observacional:	(∀f₀,f₁: fila)(f₀ =obs f₁ ⇐⇒ ((∀p: persona) (Esperando(p, f₀) =obs Esperando(p, f₁) ∧L
+																												Esperando(p, f₀) ⇒L (Posición(p, f₀)  =obs Posición(p, f₁) ∧ SeColó?(p, f₀)  =obs SeColó?(p, f₁)))));
+	Géneros: fila
+	Exporta: fila, observadores, generadores, 
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		Esperando:			 persona × fila									-> bool 
+		Posición: 			 persona p × fila f 						-> nat   	{Esperando(p, f)}
+		SeColó?:				 persona p × fila f 						-> bool   {Esperando(p, f)}
+	Generadores:
+		AbrirVentanilla: 																-> fila
+		Llegar: 				 persona p × fila f 						-> fila 	{¬Esperando(p, f)}
+		ColarseAntesDe:  persona p × persona q × fila f -> fila		{¬Esperando(p, f) ∧ Esperando(q, f)}
+		Atender: 				 fila f 												-> fila 	{¬Vacía(f)}
+		Retirarse: 			 persona p × fila f  						-> fila   {Esperando(p, f)}
+	Otras Operaciones:
+		Vacía:					 fila 													-> bool 
+		Longitud: 			 fila 													-> nat
+	Axiomas:
+		Esperando(p, AbrirVentanilla)					 ≡ false 
+		Esperando(p, Llegar(p', f)) 					 ≡ p = p' ∨ Esperando(p, f)
+		Esperando(p, ColarseAntesDe(p', q, f)) ≡ p = q ∨ Esperando(p, f)
+		Esperando(p, Atender(f)) 		 				 	 ≡ Esperando(p, f) ∧L Posición(p, f) ≠ 1
+		Esperando(p, Retirarse(p', f)) 				 ≡ p ≠ p' ∧ Esperando(p, f)
+		
+		Posición(p, Llegar(p', f))						 ≡ if p = p' then Longitud(f) + 1 else Posición(p, f) fi
+		Posición(p, ColarseAntesDe(p', q, f))	 ≡ 
+		if p = q then
+			Posición(p, f) + 1
+		else
+			if Posición(p, f) > Posición(q, f) then
+				Posición(p, f) + 1
+			else
+				Posición(p, f)
+			fi
+		fi
+		Posición(p, Atender(f))			 				   ≡ Posición(p, f) - 1
+		Posición(p, Retirarse(p', f)) 				 ≡ Posición(p, f) - if Posición(p, f) > Posición(p', f) then 1 else 0 fi
+		
+		SeColó?(p, Llegar(p', f)) 						 ≡ if p = p' then false else SeColó?(p, f) fi
+		SeColó?(p, ColarseAntesDe(p', q, f))	 ≡ if p = p' then true else SeColó?(p, f) fi
+		SeColó?(p, Atender(f)) 		 				 		 ≡ SeColó?(p, f)
+		SeColó?(p, Retirarse(p', f)) 					 ≡ SeColó?(p, f)
+		
+		Vacía(f)									 					 	 ≡ Longitud(f) = 0
+		
+		Longitud(AbrirVentanilla)		 					 ≡ 0
+		Longitud(Llegar(p, f)) 						 	   ≡ Longitud(f) + 1
+		Longitud(Atender(f)) 								 	 ≡ Longitud(f) - 1
+		
+Fin TAD
+
+TAD Fila con Información Histórica
+	Igualdad Observacional:	(∀f₀,f₁: fila)(f₀ =obs f₁ ⇐⇒ ((∀p: persona) (Esperando(p, f₀) =obs Esperando(p, f₁) ∧L
+																												Esperando(p, f₀) ⇒L (Posición(p, f₀)  =obs Posición(p, f₁) ∧ SeColó?(p, f₀)  =obs SeColó?(p, f₁)))));
+	Géneros: fila
+	Exporta: fila, observadores, generadores, 
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		Esperando:			 persona × fila									-> bool 
+		Posición: 			 persona p × fila f 						-> nat   	{Esperando(p, f)}
+		SeColó?:				 persona p × fila f 						-> bool   {Esperando(p, f)}
+		Entró?: 				 persona × fila 		 						-> bool
+		FueAtendido?:    persona × fila 								-> bool
+	Generadores:
+		AbrirVentanilla: 																-> fila
+		Llegar: 				 persona p × fila f 						-> fila 	{¬Esperando(p, f)}
+		ColarseAntesDe:  persona p × persona q × fila f -> fila		{¬Esperando(p, f) ∧ Esperando(q, f)}
+		Atender: 				 fila f 												-> fila 	{¬Vacía(f)}
+		Retirarse: 			 persona p × fila f  						-> fila   {Esperando(p, f)}
+	Otras Operaciones:
+		Vacía:					 fila 													-> bool 
+		Longitud: 			 fila 													-> nat
+	Axiomas:
+		Esperando(p, AbrirVentanilla)					 		≡ false 
+		Esperando(p, Llegar(p', f)) 					 		≡ p = p' ∨ Esperando(p, f)
+		Esperando(p, ColarseAntesDe(p', q, f)) 		≡ p = q ∨ Esperando(p, f)
+		Esperando(p, Atender(f)) 		 				 	 		≡ Esperando(p, f) ∧L Posición(p, f) ≠ 1
+		Esperando(p, Retirarse(p', f)) 				 		≡ p ≠ p' ∧ Esperando(p, f)
+		
+		Posición(p, Llegar(p', f))						 		≡ if p = p' then Longitud(f) + 1 else Posición(p, f) fi
+		Posición(p, ColarseAntesDe(p', q, f))	 		≡ 
+		if p = q then
+			Posición(p, f) + 1
+		else
+			if Posición(p, f) > Posición(q, f) then
+				Posición(p, f) + 1
+			else
+				Posición(p, f)
+			fi
+		fi
+		Posición(p, Atender(f))			 				   		≡ Posición(p, f) - 1
+		Posición(p, Retirarse(p', f)) 				 		≡ Posición(p, f) - if Posición(p, f) > Posición(p', f) then 1 else 0 fi
+		
+		SeColó?(p, Llegar(p', f)) 						 		≡ if p = p' then false else SeColó?(p, f) fi
+		SeColó?(p, ColarseAntesDe(p', q, f))	 		≡ if p = p' then true else SeColó?(p, f) fi
+		SeColó?(p, Atender(f)) 		 				 		 		≡ SeColó?(p, f)
+		SeColó?(p, Retirarse(p', f)) 					 		≡ SeColó?(p, f)
+		
+		Entró?(p, AbrirVentanilla)					 	 		≡ false 
+		Entró?(p, Llegar(p', f)) 					 		 		≡ p = p' ∨ Entró?(p, f)
+		Entró?(p, ColarseAntesDe(p', q, f)) 	 		≡ p = p' ∨ Entró?(p, q)
+		Entró?(p, Atender(f)) 		 				 	 	 		≡ Entró?(p, f)
+		Entró?(p, Retirarse(p', f)) 				 	 		≡ Entró?(p, f)
+		
+		FueAtendido?(p, AbrirVentanilla)					≡ false 
+		FueAtendido?(p, Llegar(p', f)) 					 	≡ FueAtendido?(p, f)
+		FueAtendido?(p, ColarseAntesDe(p', q, f)) ≡ FueAtendido?(p, f)
+		FueAtendido?(p, Atender(f)) 		 				 	≡ (Esperando(p, f) ∧L Posición(p, f) = 1) ∨ FueAtendido?(p, f)
+		FueAtendido?(p, Retirarse(p', f)) 				≡ FueAtendido?(p, f)
+		
+		Vacía(f)									 					 	 		≡ Longitud(f) = 0
+		
+		Longitud(AbrirVentanilla)		 					 		≡ 0
+		Longitud(Llegar(p, f)) 						 	   		≡ Longitud(f) + 1
+		Longitud(Atender(f)) 								 	 		≡ Longitud(f) - 1
+		
+Fin TAD

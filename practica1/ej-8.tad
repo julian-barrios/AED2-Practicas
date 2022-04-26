@@ -1,0 +1,41 @@
+TAD Robot
+	Igualdad Observacional:	(∀r₁,r₂: robot)(r₁ =obs r₂ ⇐⇒ (Trayectoria(r₁) =obs Trayectoria(r₂)))
+	Observadores Básicos:
+		Trayectoria:			robot 						 			-> secuencia(coordenada) 	
+	Generadores:
+		Ubicar: 					coordenada				 			-> robot
+		Arriba: 					robot 						 			-> robot
+		Abajo: 						robot    					 			-> robot
+		Derecha: 					robot 						 			-> robot
+		Izquierda: 				robot 						 			-> robot
+	Otras Operaciones:
+		PosiciónActual: 	robot 						 			-> coordenada
+		CuántasVecesPasó: coordenada × robot 			-> nat
+		MásALaDerecha: 		robot 						 			-> coordenada
+		maximoDer:				secuencia(coordenada)	s	-> coordenada {¬vacía?(s)}	
+	Axiomas: (∀r: robot)(∀c: coordenada)(∀s: secuencia(coordenada))
+		Trayectoria(Ubicar(c)) 		≡ c • <>
+		Trayectoria(Arriba(r)) 		≡ ⟨π₁(PosiciónActual(Trayectoria(r))) + 1, π₂(PosiciónActual(Trayectoria(r)))⟩ • Trayectoria(r)
+		Trayectoria(Abajo(r)) 		≡ ⟨π₁(PosiciónActual(Trayectoria(r))) - 1, π₂(PosiciónActual(Trayectoria(r)))⟩ • Trayectoria(r)
+		Trayectoria(Derecha(r)) 	≡	⟨π₁(PosiciónActual(Trayectoria(r))), π₂(PosiciónActual(Trayectoria(r))) + 1⟩ • Trayectoria(r)
+		Trayectoria(Izquierda(r)) ≡ ⟨π₁(PosiciónActual(Trayectoria(r))), π₂(PosiciónActual(Trayectoria(r))) - 1⟩ • Trayectoria(r)
+		
+		PosiciónActual(r) 				≡ prim(Trayectoria(r))
+		
+		CuántasVecesPasó(c, r) 		≡ CantidadApariciones(Trayectoria(r), c)
+		
+		MásALaDerecha(r) 					≡ maximoDer(Trayectoria(r))
+		
+		maximoDer(s) 							≡ 
+		if long(s) = 1 then
+			prim(s)
+		else
+			if π₂(prim(s)) ≥ π₂(prim(fin(s))) then
+				maximoDer(prim(s) • fin(s))
+			else
+				maximoDer(fin(s))
+			fi
+		fi
+		
+	TAD Coordenada es tupla(entero, entero)
+Fin TAD

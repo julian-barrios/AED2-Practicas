@@ -1,0 +1,43 @@
+
+f ∈ O(h) ⇐⇒ {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) f(n) < c*h(n) ∀n ≥ n₀} 
+
+
+
+\********************************** Item 1 *********************************\
+
+
+f(n) = n^2 - 4n + 2  y  h(n) = n^2  
+
+f ∈ O(h) ⇐⇒ {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) n^2-4n+2 < c*n^2 ∀n ≥ n₀}
+
+Tomando c = 2
+
+n^2-4n+2 < 2*n^2 ⇐⇒ n > sqrt(6)-2 ⇐⇒ n > 1 = n₀ 
+
+
+
+\********************************** Item 2 *********************************\
+
+
+g(n) = n^k  y h(n) = n^(k+1)  y  f ∈ O(g)
+
+Como f ∈ O(g), si g ∈ O(h), entonces, por transitividad f ∈ O(h)
+
+g ∈ O(h) ⇐⇒ {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) n^k < c*n^(k+1) ∀n ≥ n₀}
+
+Tomando c = 1
+
+n^k < n^(k+1) ⇐⇒ n > 1 = n₀ 
+
+
+
+\********************************** Item 3 *********************************\
+
+
+g(n) = log(n) y h(n) = n y f ∈ O(g)
+
+Como f ∈ O(g), si g ∈ O(h), entonces, por transitividad f ∈ O(h)
+
+g ∈ O(h) ⇐⇒ {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) log(n) < c*n ∀n ≥ n₀}
+
+Lo cual vale ∀c ∈ ℝ

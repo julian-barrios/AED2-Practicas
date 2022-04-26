@@ -1,0 +1,9 @@
+
+\********************************** Item A *********************************\
+
+Que O(f) ⊆ O(g) significa, intuitivamente, que en el infinito g crece mas rapido que f. A su vez, que O(f) ⊂ O(g) y O(g) ⊂ O(f) se interpreta como que en el infinito crecen de igual forma. 
+
+
+\********************************** Item B *********************************\
+
+O(1/x) ⊆ O(1) ⊆ O(sqrt(2)) ⊆ O(1+sin^2(x)) ⊆ O(log(log(x))) ⊆ O(log(x)) ⊆ O(log(x^2)) ⊆ O(log^2(x)) ⊆ O(sqrt(x)) ⊆ O(x) ⊆ O(log(x!)) ⊆ O(x*log(x)) ⊆ O(x^2) ⊆ O(x!) ⊆ O(x^x)

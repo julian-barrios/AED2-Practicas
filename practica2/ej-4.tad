@@ -1,0 +1,49 @@
+
+\********************************** Item A *********************************\
+
+function sumatoria(arreglo A) 
+	int i, total;												// O(1)
+	total := 0													// O(1)			
+	for i := 0 ... Long(A) - 1 do 			// O(n)
+		total := total + A[i]; 						// O(1)
+	end for
+end function
+
+Complejidad total O(n)
+
+
+\********************************** Item B *********************************\
+
+function sumatoriaLenta(natural N) 
+	int i, total;											// O(1)
+	total := 0;												// O(1)
+	for i := 1 ... n do								// O(n)
+		for j := 1 ... i do							// O(i)
+			total := total + 1;						// O(1)
+		end for
+	end for
+end function
+
+O(n)*O(i) = sum i from i=1 to n = n*(n+1)/2
+
+Complejidad total O(n^2)
+
+\********************************** Item C *********************************\
+
+
+function ProductoMat(matriz A, matriz B)																	
+	int fil, col, val, colAFilB;																			// O(1)
+	matriz res(Filas(A), Columnas(B));																// O(1)
+	for fil := 0 . . . Filas(A) - 1 do																// O(p)
+		for col := 0 . . . Columnas(B) - 1 do														// O(r)
+			val := 0;
+			for colAFilB := 0 . . . Columnas(A) - 1 do										// O(q)	
+				val := val + (A[fil][colAFilB] * B[colAFilB][col]);					// O(1)
+			end for
+			res[fil][col] := val;																					// O(1)
+		end for
+	end for
+	return res;																												// O(1)
+end function
+
+Complejidad total O(p*r*q)

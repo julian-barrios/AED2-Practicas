@@ -1,0 +1,58 @@
+
+TAD Juego de la Oca
+	Igualdad Observacional:();
+	Géneros: jdlo
+	Exporta: jdlo, observadores, generadores, 
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		tablero:	 jdlo 															-> tablero 	
+		jugadores: jdlo 															-> tupla(jugador, jugador)
+		turno: 		 jdlo																-> jugador
+		valorDado: jdlo																-> nat
+		posicion:  jugador j × jdlo	jo								-> nat											{j = π₁(jugadores(jo)) ∨ j = π₂(jugadores(jo))}
+		pasó?: 		 jugador j × baldosa b × jdlo jo 		-> bool 										{j = π₁(jugadores(jo)) ∨ j = π₂(jugadores(jo)) ∧ está?(b, tablero(jo))}
+	Generadores:
+		comenzar:	 jugador j × jugador j' ×	tablero t	-> jdlo											
+		tirarDado: jugador j × jdlo 									-> jdlo
+		
+	Otras Operaciones:
+	Axiomas:
+		tablero(comenzar(j, j', t)) 		≡ t
+		tablero(tirarDado(j, jo)) 			≡ tablero(jo)
+		
+		jugadores(comenzar(j, j', t)) 	≡ ⟨j, j'⟩
+		jugadores(tirarDado(j, jo)) 		≡ jugadores(jo)
+		
+		turno(comenzar(j, j', t)) ≡ j
+		turno(tirarDado(j, jo)) ≡ if π₁(jugadores(jo)) = j then π₂(jugadores(jo)) else π₁(jugadores(jo)) fi
+		
+		posicion(j, comenzar(j, j', t)) ≡ 0
+		posicion(j, tirarDado(j', jo)) 	≡ if j = j' then valorDado(j) + baldosas(tablero(jo))[posicion(j, jo) + valorDado(j)] else 0 fi + posicion(j, jo)
+		
+		pasó?(j, b, comenzar(j, j'', t)) ≡ baldosas(t)[0] = b
+		  
+		
+		
+Fin TAD
+
+
+TAD Baldosa Es String
+
+TAD Tablero
+	Igualdad Observacional:();
+	Géneros: tab
+	Exporta: tab, observadores, generadores, 
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		largo:		tab t 										-> nat 
+		baldosas: tab t             				-> ad(baldosa)
+	Generadores:
+		crear:		nat n × ad(baldosa) ab	-> tab						{long(sb) > 1 ∧ long(sb) = n}						
+	Otras Operaciones:
+	Axiomas:
+		largo(crear(n, sb)) 	 	≡ n
+		baldosas(crear(n, sb)) 	≡ sb
+
+Fin TAD

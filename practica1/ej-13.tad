@@ -1,0 +1,30 @@
+TAD Parada Es Nat
+
+TAD Colectivo
+	Igualdad Observacional:();
+	Géneros: col
+	Exporta: col, observadores, generadores, 
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		cuantosBajan:			col × parada 								-> nat
+		butacas: 					col 				    						-> nat
+		recorrido:				col													-> secu(parada)
+		ubicacion:				col 												-> parada
+		personasTotales: 	col 												-> nat
+	Generadores:
+		arrancar:					nat × secu(parada) sp				-> col						
+		subir:    		 		parada p × col c						-> col 						{p ∈ recorrido(c)}
+		avanzar:					col 												-> col						{p,p' ∈ recorrido(c) ∧ p ≠ p'}	 
+	Otras Operaciones:
+	Axiomas:
+		#butacasLibres(arrancar(n)) 	≡ n
+		#butacasLibres(subir(c)) 			≡ if #butacasLibres(c) ≤ 1 then 0 else #butacasLibres(c) - 1 fi
+		#butacasLibres(bajar(c))			≡ if #personasParadas(c) ≥ 1 then 0 else #butacasLibres(c) + 1 fi
+		
+		#personasParadas(arrancar(n)) ≡ 0
+		#personasParadas(subir(c)) 		≡ if #butacasLibres(c) ≥ 1 then 0 else #personasParadas(c) + 1 fi
+		#personasParadas(bajar(c)) 		≡ if #personasParadas(c) ≤ 1 then 0 else #personasParadas(c) - 1 fi
+		
+
+Fin TAD

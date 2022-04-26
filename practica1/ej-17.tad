@@ -1,0 +1,72 @@
+TAD Vehiculo Es String
+TAD Precio Es Nat
+TAD Limite Es Nat 
+
+TAD PDZ
+	Igualdad Observacional:	(∀p₀,p₁: pdz)
+	      						(p₀ =obs p₁ ⇐⇒
+									(precios(p₀) =obs precios(p₁) ∧ cabinas(p₀) = cabinas(p₁) ∧ 
+									(∀c: cabina)(def?(c, cabinas(p₀)) ⇒L (colaDeCabina(c, p₀) =obs colaDeCabina(c, p₁) ∧ facturado(c, p₀) =obs facturado(c, p₁)) ∧
+									(∀v: vehiculo)(def?(v, precios(p₀)) ⇒L #vehiculosPorCabina(c, v, p₀) =obs #vehiculosPorCabina(c, v, p₁)))	
+									)
+								)
+	Géneros: pdz
+	Exporta: pdz, observadores, generadores, 
+	Usa: Bool, Nat, Cabina, Vehiculo, Precio, Limite
+	
+	Observadores Básicos:
+		precios: 						 		pdz																							 -> dicc(vehiculo, precio)	
+		cabinas: 						 		pdz 													 									 -> dicc(cabina, limite)
+		colaDeCabina: 			 		cabina c × pdz p 																 -> cola(vehiculo) 				  {def?(c, cabinas(p))}
+		facturado: 					 		cabina c × pdz p 																 -> nat 										{def?(c, cabinas(p))}
+		#vehiculosPorCabina: 		cabina c × vehiculo v × pdz p 									 -> nat 										{def?(c, cabinas(p)) ∧ def?(v, precios(p))}
+	Generadores:
+		nuevoPeaje:					 		dicc(vehiculo, precio) × dicc(cabina, limite) dc -> pdz 										{¬Ø?(claves(dc))}
+		nuevoVehiculo:			 		cabina c × vehiculo v × pdz p 									 -> pdz 										{def?(c, cabinas(p)) ∧ def?(v, precios(p))}	
+		fueAtendido:				 		cabina c × pdz p 																 -> pdz 										{def?(c, cabinas(p))}
+	Otras Operaciones:
+		desencolarLaMitad:			nat × nat × cola(vehiculo)											 -> cola(vehiculo)		
+		#vehiculosDesencolados:	vehiculo v × nat × nat × cola(vehiculo)				   -> nat 										{def?(v, precios(p))}
+	Axiomas: ∀dvp: dicc(vehiculo, precio), ∀dcl: dicc(cabina, limite), ∀c,c': cabina, ∀v,v': vehiculo, ∀p: pdz
+		precios(nuevoPeaje(dvp, dcl))												≡ dvp
+		precios(nuevoVehiculo(c, v, p)) 										≡ precios(p)
+		precios(fueAtendido(c, p)) 													≡ precios(p)
+		
+		cabinas(nuevoPeaje(dvp, dcl)) 											≡ dcl
+		cabinas(nuevoVehiculo(c, v, p)) 										≡ cabinas(p)
+		cabinas(fueAtendido(c, p)) 													≡ cabinas(p)
+		
+		colaDeCabina(c, nuevoPeaje(dvp, dcl)) 							≡ vacío
+		colaDeCabina(c, nuevoVehiculo(c', v, p)) 						≡ if tamaño(colaDeCabina(c', p)) = obtener(c', cabinas(p)) - 1 then
+																														if c = c' then
+																															desencolarLaMitad(0, tamaño(colaDeCabina(c, p)) - 1, encolar(v, colaDeCabina(c, p)))
+																														else
+																															desencolarLaMitad(0, tamaño(colaDeCabina(c, p)) - 1, colaDeCabina(c, p))
+																														fi
+																													else
+																														colaDeCabina(c, p)
+																													fi
+		colaDeCabina(c, fueAtendido(c', p)) 								≡ if c = c' then desencolar(colaDeCabina(c, p)) else colaDeCabina(c, p) fi
+
+		facturado(c, nuevoPeaje(dvp, dcl)) 									≡ 0
+		facturado(c, nuevoVehiculo(c', v, p)) 							≡ facturado(c, p)
+		facturado(c, fueAtendido(c', p)) 										≡ if c = c' then obtener(proximo(colaDeCabina(c,p)), precio(p)) else 0 fi + facturado(c, p)
+
+		#vehiculosPorCabina(c, v, nuevoPeaje(dvp, dcl)) 		≡ 0
+		#vehiculosPorCabina(c, v, nuevoVehiculo(c', v', p)) ≡ if tamaño(colaDeCabina(c', p)) = obtener(c', cabinas(p)) - 1 then
+																														if c = c' then
+																															#vehiculosDesencolados(v, 0, tamaño(colaDeCabina(c, p)) - 1, encolar(v', colaDeCabina(c, p)))
+																														else
+																															#vehiculosDesencolados(v, 0, tamaño(colaDeCabina(c, p)) - 1, colaDeCabina(c, p))
+																														fi
+																													else
+																														0
+																													fi + #VehiculosPorCabina(c, v, p)
+		#vehiculosPorCabina(c, v, fueAtendido(c', p)) 			≡ #vehiculosPorCabina(c, v, p) - if c = c' then 1 else 0 fi
+		
+		desencolarLaMitad(min, max, col)										= if min ≥ max then col else desencolarLaMitad(v, min + 1, max - 1, desencolar(col)) fi 
+		
+		#vehiculosDesencolados(v, min, max, col) 						≡ if min ≥ max then 0 else β(v = proximo(col)) fi + #vehiculosDesencolados(v, min + 1, max - 1, desencolar(col))
+		
+
+Fin TAD

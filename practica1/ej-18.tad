@@ -1,0 +1,63 @@
+TAD Persona Es String
+
+TAD RedAntisocial
+	Igualdad Observacional:	(∀r₀,r₁: ra)
+	      						(r₀ =obs r₁ ⇐⇒
+									(miembros(r₀) =obs miembros(r₁) ∧ expulsados(r₀) =obs expulsados(r₁) ∧ (∀p: persona)(p ∈ miembros(r₀) ⇒L seguidores(p, r₀) =obs seguidores(p, r₁)) ))
+	Géneros: ra
+	Exporta: ra, observadores, generadores, otras operaciones, 
+	Usa: Bool, Nat, Persona 
+	
+	Observadores Básicos:
+		miembros:	 							   ra						 		 									 -> conj(persona)
+		seguidores: 							 persona p × ra r 									 -> conj(persona)		{p ∈ miembros(r)}	
+		expulsados: 							 ra 							 									 -> conj(persona)
+		absueltos:							 	 ra 																 -> conj(persona)
+	Generadores:
+		iniciar:   								 persona			                			 -> ra
+		reclutar:  								 persona p × persona p' × ra r 			 -> ra     					{p ∈ miembros(r) ∧ ¬(p' ∈ miembros(r))} 
+		enjuiciar: 								 persona p × ra r 						 			 -> ra 		 					{p ∈ miembros(r)}
+		absolver:  								 persona p × ra r 						 			 -> ra		 					{¬(p ∈ miembros(r))}
+	Otras Operaciones:
+		tribunal:									 ra 																 -> conj(persona)
+		dame3: 										 conj(persona)											 -> conj(persona)		{(∀p: persona)(p' ∈ cp ⇒L p' ∈ miembros(r))}
+		dame3Aux:									 conj(persona) × conj(persona) 			 -> conj(persona)	
+		mitadMasUnoEsDescendiente: persona p × conj(persona) cp × ra r -> bool						{p ∈ miembros(r) ∧ (∀p': persona)(p' ∈ cp ⇒L p' ∈ miembros(r))}
+		seguidoresTotales:				 persona p × ra r										 -> conj(persona) 	{p ∈ miembros(r)}
+		todosLosSeguidores: 			 conj(persona) cp × ra r 						 -> conj(persona) 	{(∀p: persona)(p ∈ cp ⇒L p ∈ miembros(r))}
+	Axiomas:
+	miembros(iniciar(p)) 				 					≡ Ag(p, Ø)
+	miembros(reclutar(p, p', r)) 					≡ Ag(p, miembros(r))
+	miembros(enjuiciar(p, r))  	 					≡ if mitadMasUnoEsDescendiente(p, tribunal(r), r) then miembros(r) else miembros(r) - seguidoresTotales(p, r) fi
+	miembros(absolver(p, r)) 							≡ miembros(r)
+	
+	seguidores(iniciar(p), p) 						≡ Ø
+	seguidores(p, reclutar(p', p'', r)) 	≡ if p = p' then Ag(p'', seguidores(p, r)) else seguidores(p, r) fi
+	seguidores(p, enjuiciar(p', r)) 			≡ seguidores(p, r)
+	seguidores(p, absolver(p', r)) 				≡ seguidores(p, r)																	
+	
+	expulsados(iniciar(p)) 								≡ Ø
+	expulsados(reclutar(p, p', r)) 				≡ expulsados(r)
+	expulsados(enjuiciar(p, r)) 					≡	if mitadMasUnoEsDescendiente(p', tribunal(r), r) then expulsados(r) ∪ seguidoresTotales(p, r) else expulsados(p, r) fi
+	expulsados(absolver(p, r)) 						≡ if p ∈ expulsados(r) then expulsados(r) - {p} else expulsados(r) fi
+	
+	absueltos(iniciar(p))									≡ Ø 
+	absueltos(reclutar(p, p', r))					≡	absueltos(r)
+	absueltos(enjuiciar(p, r))						≡ absueltos(r)
+	absueltos(absolver(p, r))							≡ Ag(p, absueltos(r))
+	
+	
+	tribunal(r)														≡ dame3(miembros(r))
+	
+	dame3(cp)															≡ dame3Aux(cp, Ø)
+	
+	dame3Aux(cp, sol)											≡ if #sol = 3 then Ø else Ag(dameUno(cp), dame3Aux(sinUno(cp)), Ag(dameUno(cp), Ø)) fi
+	
+	mitadMasUnoEsDescendiente(p, cp, r) 	≡ dameUno(cp) ∈ seguidoresTotales(p, r) ∧ dameUno(sinUno(cp)) ∈ seguidoresTotales(p, r) 
+	
+	seguidoresTotales(p, r) 							≡ Ag(p, todosLosSeguidores(seguidores(p, r), r))
+	
+	todosLosSeguidores(cp, r) 						≡ if Ø?(cp) then Ø else Ag(dameUno(cp), todosLosSeguidores(seguidores(dameUno(cp), r) ∪ sinUno(cp)), r) fi
+	
+	 
+Fin TAD

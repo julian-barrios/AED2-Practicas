@@ -1,0 +1,35 @@
+esHoja?: ab(α) → bool
+esHoja?(a) ≡ if nil?(a) then false else nil?(izq(a)) ∧ nil?(der(a)) fi 
+
+
+#Hojas : ab(α) → nat 
+#Hojas(a) ≡ 
+if nil?(a) then
+	0
+else
+	if esHoja?(a) then
+		1
+	else
+		#Hojas(der(a)) + #Hojas(izq(a))
+	fi
+fi 
+
+
+dejeneradoAIzquierda : ab(α) → bool 
+dejeneradoAIzquierda(a) ≡ nil?(a) ∨ (nil?(der(a)) ∧ dejeneradoAIzquierda(izq(a)))
+
+
+zigZag : ab(α) → bool 
+zigZag(a) ≡ true 
+
+
+ultimoNivelCompleto : ab(α) → nat 
+ultimoNivelCompleto(a) ≡ if nil?(a) then 0 else 1 + min(ultimoNivelCompleto(izq(a)), ultimoNivelCompleto(der(a))) fi
+
+
+espejo : ab(α)  → ab(α) 
+espejo(a) ≡ if nil?(a) then nil else bin(espejo(der(a)), raiz(a), espejo(izq(a))) fi
+
+
+esSimetrico? : ab(α) → bool 
+esSimetrico(a) ≡ a = espejo(a) 

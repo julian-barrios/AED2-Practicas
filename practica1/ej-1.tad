@@ -1,0 +1,53 @@
+duplicar : secu(α) → secu(α) 
+duplicar(s) ≡ if vacía?(s) then <> else prim(s) • prim(s) • duplicar(fin(s)) fi
+
+
+reverso : secu(α) → secu(α) 
+reverso(s) ≡ if vacía?(s) then <> else reverso(com(s)) ◦ ult(s) fi
+
+
+capicua : secu(α) → bool 
+capicua(s) ≡ (long(s) = 0 ∨ long(s) = 1) ∨ (prim(s) = ult(s) ∧ capicua(fin(com(s))))
+
+
+esPrefijo? : secu(α) × secu(α) → bool
+esPrefijo?(s, t) ≡ vacía?(t) ∨  (vacía?(s) ∧ vacía?(t)) ∨ ((prim(t) = prim(s) ∧ esPrefijo?(fin(s), fin(t))))
+
+
+buscar:  secu(α) × secu(α) → nat
+buscar(s, t) ≡ if esPrefijo(s, t) then 0 else 1 + buscar(s, fin(t)) fi
+
+
+estaOrdenada? : secu(α) → bool 
+estaOrdenada?(s) ≡ (long(s) = 0 ∨ long(s) = 1) ∨ (prim(s) = prim(fin(s)) ∧ estaOrdenada?(fin(s)))
+
+
+insertarOrdenada : secu(α) × α → secu(α) 
+insertarOrdenada(s, e) ≡ 
+if vacía?(s) then
+	e • s
+else
+	if e ≤ prim(s) then
+		e • s
+	else
+		prim(s) • insertarOrdenada(fin(s), e)
+	fi
+fi
+
+
+cantidadApariciones : secu(α) × α → nat 
+cantidadAparicones(s, e) ≡ 
+if vacía?(s) then
+	0
+else
+	if e = prim(s) then
+		1 
+	else
+		0
+	fi + cantidadApariones(fin(s), e)
+fi
+
+
+esPermutacion?: secu(α) × secu(α) → bool 
+esPermutacion(s,t) ≡ (vacía?(s) ∧ vacía?(t)) ∨ long(s) = long(t) ∧ 
+										 (cantidadApariones(s, prim(s)) = cantidadApariones(t, prim(s)) ∧ cantidadApariones(s, prim(fin(s))) = cantidadApariones(t, prim(fin(s))))

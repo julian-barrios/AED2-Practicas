@@ -1,0 +1,24 @@
+TAD Polinomio
+	Igualdad Observacional:	(∀p₁,p₂: polinomio)(p₁ =obs p₂ ⇐⇒ ((∀n: nat) (Evaluar(p₁, n) =obs Evaluar(p₂, n))))
+	Géneros: polinomio
+	
+	Observadores Básicos:
+		Evaluar:	polinomio × nat		 		-> nat
+	Generadores:
+		Cte:												 		-> polinomio
+		X: 													 		-> polinomio
+		• + •: 		polinomio × polinomio -> polinomio
+		• * •: 		polinomio × polinomio -> polinomio
+	Otras Operaciones:
+		esRaiz:		polinomio × nat				-> bool
+	Axiomas: (∀p,q: polinomio)(∀n: nat)
+		Evaluar(Cte, n) 		≡ Cte
+		Evaluar(X, n) 			≡ n
+		Evaluar((p + q), n) ≡ Evaluar(p, n) + Evaluar(q, n)
+		Evaluar((p*q), n) 	≡ Evaluar(p, n) * Evaluar(q, n)
+		
+		esRaiz(Cte, n) 		 	≡ false
+		esRaiz(X, n) 			 	≡ Evaluar(X, n) = 0
+		esRaiz((p + q), n) 	≡ esRaiz(p, n) ∧ esRaiz(q, n)
+		esRaiz((p*q), n) 	 	≡ esRaiz(p, n) ∨ esRaiz(q, n)
+Fin TAD

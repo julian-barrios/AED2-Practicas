@@ -1,0 +1,18 @@
+
+/************** Item A ***************/
+
+									FALSO
+
+ Si consideramos log(n!), tenemos que log(n!) es O(n^2) y es Ω(n) y sin embargo no es Θ(n^2). 
+ 
+ 
+ /************** Item B ***************/
+
+ 									FALSO
+
+El conjunto Ω(n*log(n)) ∩ O(n) es vacío.
+
+
+/************** Item C ***************/
+
+								 FALSO

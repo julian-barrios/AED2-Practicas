@@ -1,0 +1,178 @@
+
+\********************************************************** Item A **********************************************************\
+
+																													FALSO
+
+2^n = O(1) ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) 2^n < c ∀n ≥ n₀}
+
+2^n < c ⇐⇒ n*log(2) < log(c) ⇐⇒ n < log(c)/log(2)
+
+Lo cual es falso pues tiene que cumplirse ∀n ∈ ℕ
+
+Tomando n = log(c)/log(2) + 1 deja de cumplirse.
+
+
+
+\********************************************************** Item B **********************************************************\
+
+																													VERDADERO
+
+n = O(n!) ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) n < c*n! ∀n ≥ n₀}
+
+Tomando c = 2 se tiene que n < 2*n! ∀n ∈ ℕ.
+
+
+
+\********************************************************** Item C **********************************************************\
+
+																													VERDADERO
+
+n! = O(n^n) ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) n! < c*n^n  ∀n ≥ n₀}
+
+Tomando c = 1 lo probamos por induccion con n₀ = 2 
+
+												p(n):   n! < n^n 	∀n ≥ 2 
+
+Caso base:  2! = 2 < 4 = 2^2 
+
+Paso inductivo: Dado  h ∈ ℕ ≥ 2, p(h) V → p(h+1) V
+
+HI: h! < h^h 
+
+QPQ: (h+1)! < (h+1)^(h+1) 
+
+(h+1)! = (h+1)*h! < (h+1)*h^h < (h+1)(h+1)^h = (h+1)^(h+1)
+
+Como hemos probado tanto el caso base como el paso inductivo, se tiene que p(n) es verdadera ∀n ≥ 2.
+
+
+
+\********************************************************** Item D **********************************************************\
+
+																													VERDADERO
+
+2^n = O(n!)  ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) 2^n < c*n! ∀n ≥ n₀}
+
+Tomando c = 1 lo probamos por induccion con n₀ = 4
+
+												p(n):   2^n < n! ∀n ≥ 4
+
+Caso base:  2^4 = 16 < 24 = 4!  
+
+Paso inductivo: Dado h ∈ ℕ ≥ 4, p(h) V → p(h+1) V 
+
+HI:  2^h < h! 
+
+QPQ: 2^(h+1) < (h+1)!
+
+2^(h+1) = 2*2^h < 2*h! < (h+1)*h! = (h+1)!
+
+$Como hemos probado tanto el caso base como el paso inductivo, se tiene que p(n) es verdadera ∀n ≥ 4
+
+
+
+\********************************************************** Item E **********************************************************\
+
+																													VERDADERO
+
+i*n = O(j*n) ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) i*n < c*j*n ∀n ≥ n₀}
+
+i*n < c*j*n ↔ i < c*j ↔ i/j < c
+
+Tomando c = i/j + 1 se cumple la desigualdad.
+
+
+
+\********************************************************** Item F **********************************************************\
+
+																													VERDADERO
+
+2^k = O(1) ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) 2^k < c ∀n ≥ n₀}
+
+Tomando c = 2^k+1 se cumple la desigualdad.
+
+
+
+\********************************************************** Item G **********************************************************\
+
+																													VERDADERO
+
+log(n) = O(n)  ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) log(n) < c*n ∀n ≥ n₀}
+
+Tomando c = 1 lo probamos por induccion con n₀ = 1
+
+												p(n):  log(n) < n  ∀n ≥ 1
+
+Caso base:  log(1) = 0 < 1  
+
+Paso inductivo: Dado h ∈ ℕ ≥ 1, p(h) V → p(h+1) V
+
+HI:  log(h) < h 
+
+QPQ: log(h+1) < (h+1)
+
+
+Como el logaritmo es una funcion creciente h+1 < 2*h → log(h+1) < log(2*h). Por lo tanto: 
+
+log(h+1) < log(2*h) = log(h)+1 < h+1 
+
+Como hemos probado tanto el caso base como el paso inductivo, se tiene que p(n) es verdadera ∀n ≥ 1.
+
+
+
+\********************************************************** Item H **********************************************************\
+
+																													VERDADERO
+
+n! = O(2^n)  ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) n! < c*2^n ∀n ≥ n₀}
+
+
+
+\********************************************************** Item I **********************************************************\
+
+																													VERDADERO
+
+2^n*n^2 = O(3^n) ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) 2^n*n^2 < c*3^n ∀n ≥ n₀}
+
+Tomando c = 1 lo probamos por induccion con n₀ = 13
+
+												p(n): 2^n*n^2 < 3^n  ∀n ≥ 13
+
+
+Caso base:  2^13*13^2 = 1384448 < 1594323 = 3^13 $ 
+
+Paso inductivo: Dado h ∈ ℕ ≥ 13, p(h) V → p(h+1) V
+
+HI:    2^h*h^2 < 3^h 
+
+QPQ:   2^(h+1)*(h+1)^2 < 3^(h+1)
+
+2^(h+1)*(h+1)^2 = 2*2^h*h^2 + 2^(h+2)*h + 2^(h+1) < 2*3^h + 2*2*2^h*h + 2*2^h = 2*3^h + 2^h*(4h+2) < 2*3^h+3^h = 3^(h+1) 
+
+Como hemos probado tanto el caso base como el paso inductivo, se tiene que p(n) es verdadera ∀n ∈ ℕ ≥ 13
+
+Probemos por induccion que 2^h*(4h+2) < 3^h ∀h ∈ ℕ ≥ 13
+
+												q(h):  2^h*(4h+2) < 3^h ∀h ≥ 19
+
+Caso base:  2^9*38 = 19456 < 19683 = 3^9  
+
+Paso inductivo: Dado k ∈ ℕ ≥ 9, p(k) V → p(k+1)  V 
+
+HI:  2^k*(4k+2) < 3^k 
+
+QPQ: 2^(k+1)*(4(k+1)+2) < 3^(k+1)
+
+2^(k+1)*(4(k+1)+2) = 2*2^k*(4k+2)+ 6*2^k < 2*3^k + 6*2^k < 2*3^k + 3^k  = 3^(k+1)
+
+Como hemos probado tanto el caso base como el paso inductivo, se tiene que q(h) es verdadera ∀h ∈ ℕ ≥ 9
+
+
+
+\********************************************************** Item J **********************************************************\
+
+																													VERDADERO
+
+f = O(f) ⇐⇒  {(∃ n₀ ∈ ℕ,  c ∈ ℝ>0) f(n) < c*f(n) ∀n ≥ n₀}
+
+Tomando c = 2 y n₀ = 1 se cumple la definicion.

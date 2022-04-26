@@ -1,0 +1,59 @@
+TAD Cartero Es String
+TAD Paquete Es ⟨Codigo, Peso⟩
+TAD Codigo Es Nat
+TAD Peso Es Nat
+
+TAD OficinaPostal
+	Igualdad Observacional:	(∀o₀,o₁: op)
+	      						(o₀ =obs o₁ ⇐⇒
+									(carteros(o₀) =obs carteros(o₁) ∧ paquetes(o₀) =obs paquetes(o₁) ∧ rebotados(o₀) =obs rebotados(o₁) ∧  
+										(∀c: cartero)(def?(c, carteros(o₀)) ⇒L (enOficina(c, o₀) = enOficina(c, o₁) ∧ aEntregar(c, o₀) =obs aEntregar(c, o₁)))))
+	Géneros: op
+	Exporta: nombreTad, observadores, generadores, otras operaciones,
+	Usa: Bool, Nat, Cartero, Paquete
+	
+	Observadores Básicos:
+		carteros:	 op 					   	-> dicc(codigo, cartero)
+		paquetes:  op 							-> conj(paquete)
+		enOficina: cartero c × op o -> bool	 									{def?(c, carteros(o))}
+		aEntregar: cartero c × op o -> conj(paquetes)					{def?(c, carteros(o))} 
+		rebotados: op o 						-> nat												
+	Generadores:
+		abrir:	 	 dicc(cartero, codigo)			 				 -> op
+		recibir: 	 conj(paquete) × op      			 			 -> op
+		despachar: conj(paquete) cp × cartero c × op o -> op   		{c ∈ carteros(o) ∧L enOficina(c, o) ∧ (∀p: p ∈ cp ⇒L (p ∈ paquetes(o) ∧L obtener(carteros(o), c) = π₁(p) ∧ sum π₂(p) ≤ 25))}
+		volver:		 conj(paquete) cp × cartero c × op o -> op			{c ∈ carteros(o) ∧L ¬(enOficina(c, o)) ∧ cp ⊆ aEntregar(c, o) ∧ (∀p: p ∈ cp ⇒L (p ∈ paquetes(o) ∧L obtener(carteros(o), c) = π₁(p)))}
+	Otras Operaciones:
+	Axiomas: ∀dc: dicc(cartero, codigo), ∀cp: conj(paquete), ∀c,c': cartero, ∀o: op 
+		carteros(abrir(dc))								 ≡  dc
+		carteros(recibir(cp, o)) 		 		 	 ≡ carteros(o)
+		carteros(despachar(cp, c, o)) 		 ≡ carteros(o)
+		carteros(volver(cp, c, o)) 				 ≡ if aEntregar(c, p) = cp then borrar(c, carteros(o)) else carteros(o) fi
+		
+		paquetes(abrir(dc))								 ≡ Ø
+		paquetes(recibir(cp, o)) 					 ≡ if Ø?(cp) then
+																				 	paquetes(o)
+																				 else
+																				 	if def?(π₁(dameUno(cp)), carteros(o)) then Ag(dameUno(cp), paquetes(recibir(sinUno(cp), o))) else  paquetes(recibir(sinUno(cp), o)) fi
+																				 fi
+		paquetes(despachar(cp, c, o)) 		 ≡ paquetes(o) - cp
+		paquetes(volver(cp, c, o)) 	  		 ≡ cp ∪ paquetes(o)
+		
+		enOficina(c, abrir(dc)) 					 ≡ true 
+		enOficina(c, recibir(cp, o)) 			 ≡ enOficina(c, o)
+		enOficina(c, despachar(cp, c', o)) ≡ c ≠ c' ∧ enOficina(c, o)
+		enOficina(c, volver(cp, c', o)) 	 ≡ c = c' ∨ enOficina(c, o)
+		
+		aEntregar(c, abrir(dc))  					 ≡ Ø
+		aEntregar(c, recibir(cp, o)) 			 ≡ aEntregar(c, o)
+		aEntregar(c, despachar(cp, c', o)) ≡ if c = c' then cp else aEntregar(c, o) fi
+		aEntregar(c, volver(cp, c', o)) 	 ≡ aEntregar(c, o)
+		
+		rebotados(abrir(dc))  					 	 ≡ 0
+		rebotados(recibir(cp, o)) 			 	 ≡ rebotados(o)
+		rebotados(despachar(cp, c, o)) 	 	 ≡ rebotados(o)
+		rebotados(volver(cp, c, o)) 	 		 ≡ rebotados(o) + #(cp)
+		
+		
+		
+Fin TAD

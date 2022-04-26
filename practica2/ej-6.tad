@@ -1,0 +1,17 @@
+
+/************** Item A ***************/
+
+
+Sumaria todos los elementos del arreglo y despues por el tamano del arreglo. La suma tiene una complejidad temporal perteneciente a O(n), asi que el algoritmo tendria complejidad O(n), siendo n el tamano del arreglo.
+
+
+/************** Item B ***************/
+
+
+Dividiria el tamano del arreglo sobre 2 y calcularia el valor del elemento de esa posicion. Tendria una complejidad temporal O(1).
+
+
+/************** Item C ***************/
+
+
+Veria si el numero es divisible por algun numero entre 2 y n-1. En el peor caso (el caso en donde es primo) deberia recorrer n-2 numeros y por lo tanto tendria una complejidad temporal O(n).
