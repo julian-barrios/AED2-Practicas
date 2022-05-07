@@ -1,0 +1,16 @@
+Representación:
+	cola(α) se representa con secuencia(α)
+
+Invariante de Representación:
+	Rep:	secuencia(α)	->	bool
+	(∀s: secuencia(α)) Rep(s)	≡ true 
+
+---
+Función de abstracción:
+	Abs:	secuencia(α) s	->	cola(α)	{Rep(s)}
+	Abs(s) =obs c: cola  | (1)∧L(2)∧(3)
+		donde: 
+		(1) ≡ vacía?(c) = vacia?(s)
+		(2) ≡ proximo(c) = prim(s)
+		(3) ≡ desencolar(c) = fin(s)
+---

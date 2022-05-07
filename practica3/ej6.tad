@@ -1,0 +1,40 @@
+Representación:
+ 	altafiesta se representa con estr donde 
+		estr es tupla ⟨			invitados: conj(persona),
+												presentes: cola(persona),
+													grupoDe: dicc(grupo, conj(persona)),
+										regaloDeGrupo: dicc(grupo, regalo),
+								 grupoMasNumeroso: grupo⟩
+
+grupo, persona y regalo son string
+
+Solución Informal:
+	- El número de invitados debe ser mayor a 0.
+	- Las personas que están presentes en la fiesta tienen que estar incluidas en el conjunto de personas invitadas.
+	- Las personas de grupoDe deben ser las mismas que las que ya llegaron. Además no debe haber 2 grupos con el mismo nombre.
+	- Los grupos de grupoDe y regalosDeGrupo deben ser los mismos.
+	- El grupo más numeroso debe pertenecer a los grupos de grupoDe y además debe ser el que más personas tiene.
+---
+Invariante de Representación:
+	Rep:	estr	->	boolean
+	(∀e: estr) Rep(e)	≡ true ⇐⇒ (1)∧(2)∧(3)∧(4)∧(5)∧(6)∧(7)
+		donde: 
+		(1)	≡ #e.invitados > 0 
+		(2)	≡	(∀p : persona)(esta?(p, e.presentes) →L p ∈ e.invitados)
+		(3) ≡ (∀p : persona)(esta?(p, e.presentes) ↔ (∃g : grupo)(g ∈ claves(e.grupoDe) ∧L p = obtener(g, e.grupoDe)))
+		(4) ≡ (∀g1, g2 : grupo)(({g1, g2} ⊂ claves(e.grupoDe) ∧ g1 6 = g2) → obtener(g1, e.grupoDe) ∩ obtener(g2, e.grupoDe) = ∅)
+		(5) ≡ claves(e.grupoDe) = claves(e.regalosDeGrupo)
+		(6) ≡ e.grupoMasNumeroso ∈ e.grupoDe
+		(7) ≡ (∀g : grupo)(g ∈ claves(e.grupoDe) → ((#obtener(g′, e.grupoDe) < #obtener(e.grupoMasNumeroso, e.grupoDe)) ∨
+					(#obtener(g′, e.grupoDe) = #obtener(e.grupoMasNumeroso, e.grupoDe) ∧ e.grupoMasNumeroso ≤ g)))
+		
+---
+Función de abstracción:
+	Abs:	estr	->	altafiesta	{Rep(e)}
+	(∀e: estr) Abs(e) =obs a: altafiesta | (1)∧(2)∧(3)∧(4)
+		donde: 
+		(1)	≡	e.invitados = invitadosPendientes(a) ∧L e.grupoMasNumeroso = grupoMasNumeroso(a) 
+		(2)	≡	e.grupoMasNumeroso = grupoMasNumeroso(a)
+		(3) ≡ (∀r : regalo)(∃g : grupo)(g ∈ claves(e.regaloDeGrupo) ∧L r = obtener(g, e.regaloDeGrupo) ↔ r ∈ regalos(a)) 
+		(4)	≡	(∀r : regalo)(r ∈ regalos(a) → (∃g : grupo)(g ∈ claves(e.regaloDeGrupo) ∧L r = obtener(e.regaloDeGrupo, g) = r ∧ personasPorRegalo(a, r) = g))
+---

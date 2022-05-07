@@ -1,0 +1,21 @@
+Representación:
+	conjunto(α) se representa con secuencia(α)
+
+Invariante de Representación:
+	Rep:	secuencia(α)	->	bool
+	Rep(s) ≡ (∀i:ℕ)(i,j < long(s) ∧ i ≠ j ⇒ s[i] ≠ s[j]) 
+
+---
+Función de abstracción:
+	Abs:	secuencia(α) s	->	conjunto(α)	{Rep(s)}
+	Abs(s) =obs c: conjunto  | (1)∧L
+		donde: 
+		(1) ≡ (∀n: α)(n ∈ c ↔ pertenece?(s, n))
+---		
+		
+pertenece(s, n) ≡ if vacía?(s) then
+										false
+									else
+										if n = prim(s) then true else pertenece?(fin(s), n) fi
+									fi 
+	

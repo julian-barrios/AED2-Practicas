@@ -1,0 +1,39 @@
+
+/***************************** Item a y b ****************************/
+
+
+Representación:
+	palindromo se representa con estr donde 
+		estr es tupla ⟨	long:	nat,
+										palabra: 	secu(α) ⟩
+
+Invariante de Representación:
+	Rep:	estr	->	boolean
+	(∀e: estr) Rep(e)	≡ true ⇐⇒ (1)∧(2)∧(3)
+		donde: 
+		(1)	≡	e.long > 0 
+		(2)	≡	e.long = long(e.palabra)
+		(3) ≡ (∀i : Z)(0 ≤ i < e.long →L e.palabra[i] = e.palabra[e.long − i − 1])
+---
+Función de abstracción:
+	Abs:	estr	->	palindromo	{Rep(e)}
+	(∀e: estr) Abs(e) =obs td: palindromo | (1)
+		donde: 
+		(1)	≡	ver(p) = e.palabra
+---
+/***************************** Item c ****************************/
+
+Invariante de Representación:
+	Rep:	estr	->	boolean
+	(∀e: estr) Rep(e)	≡ true ⇐⇒ (1)∧(2)
+		donde: 
+		(1)	≡	e.long > 0 
+		(2)	≡	(long(e.palabra) mod 2 = 0 ∧ e.long = 2*long(e.palabra)) ∨ (long(e.palabra) mod 2 ≠ 0 ∧ e.long = 2*long(e.palabra) − 1)
+---
+Función de abstracción:
+	Abs:	estr	->	palindromo	{Rep(e)}
+	(∀e: estr) Abs(e) =obs td: palindromo | (1)
+		donde: 
+		(1)	≡	if long(e.palabra) mod 2 = 0 then ver(p) = e.palabra & reverso(e.palabra) else ver(p) = e.palabra & reverso(fin(e.palabra)) fi
+
+reverso(s) = if long(s) = 0 then 〈〉 else ult(s) • fin(s) fi
