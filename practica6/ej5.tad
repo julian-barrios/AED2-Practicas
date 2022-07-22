@@ -1,0 +1,15 @@
+Interfaz:
+	isumasPotencias(in M: matriz, in n: nat) → res: matriz 
+	if n = 1 then																									  					 // O(1)
+		res ← M																											 						 // O(1)	
+	else
+		sumasPotencias(M, n/2) + sumasPotencias(M, n/2) * potencia(M, n/2)     	 // O(T(n/2))
+	fi
+
+
+
+				T(n/2) + O(1)   en otro caso
+T(n) = 
+				O(1)            si n = 1 
+
+Como es el caso 2 del teorema maestro tenemos que T(n) = O(log(n))

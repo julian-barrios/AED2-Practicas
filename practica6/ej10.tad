@@ -1,0 +1,22 @@
+Interfaz:
+		iminDif(in A: arreglo(nat), in B: arreglo(nat), in desde: nat, in hasta: nat) -> res: nat
+			if desde + 1 = hasta then																										// O(1)
+				res ← |A[desde] - B[desde]|																								// O(1)
+			else
+				mitad ← (desde + hasta)/2 																								// O(1)
+				if |A[mitad - 1] - B[mitad - 1]| < |A[mitad] - B[mitad]| then							// O(1)
+					minDif(A, B, desde, mitad)																							// O(T(n/2))		
+				else
+					minDif(A, B, mitad, hasta)																							// O(T(n/2))
+				fi
+			fi
+			
+			
+		 	  O(1) 				si n = 1
+T(n) = 			
+			  T(n/2)			si n > 1
+				
+Por el teorema maestro T(n) ∈ Θ(n)	
+			
+			
+			

@@ -1,0 +1,62 @@
+Interfaz:
+	iEncontrarFalse(in M: matriz(bool)) → ⟨nat, nat⟩ 
+		return encontrarFalseAux(M, 0, tam(M), 0, tam(M))
+	---
+	
+	iEncontrarFalseAux(in M: matriz(bool), in desdeFil: nat, in hastaFil: nat, in desdeCol: nat, in hastaCol: nat) → ⟨nat, nat⟩  
+		if desdeFil = hastaFil && desdeCol = hastaCol then												// O(1)
+			return ⟨desdeFil, hastaFil⟩																							// O(1)	
+		else
+			nat medioFil ← (desdeFil + hastaFil)/2 																	// O(1)	
+			nat medioCol ← (desdeCol + hastaCol)/2 																	// O(1)	
+			if conjuncionSubMatriz(desdeFil, medioFil, desdeCol, medioCol) then			// O(1)
+				encontrarFalseAux(A, desdeFil, medioFil, desdeCol, medioCol)					// O(T(n/4))
+			endif
+			if conjuncionSubMatriz(medioFil, hastaFil, desdeCol, medioCol) then			// O(1)
+				encontrarFalseAux(A, medioFil, hastaFil, desdeCol, medioCol)					// O(T(n/4))
+			endif
+			if conjuncionSubMatriz(desdeFil, medioFil, medioCol, hastaCol) then			// O(1)
+				encontrarFalseAux(A, desdeFil, medioFil, medioCol, hastaCol)					// O(T(n/4))
+			endif
+			if conjuncionSubMatriz(medioFil, hastaFil, medioCol, hastaCol) then			// O(1)
+				encontrarFalseAux(A, medioFil, hastaFil, medioCol, hastaCol)					// O(T(n/4))
+			endif
+		endif
+
+
+				O(1)            si n = 1
+T(n) = 
+				T(n/4) + O(1)   en otro caso 
+
+Como es el caso 2 del teorema maestro tenemos que T(n) = O(log(n^2))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

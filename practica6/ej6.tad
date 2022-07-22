@@ -1,0 +1,15 @@
+Interfaz:
+	imaximaSumaCamino(in a: ab(int)) → res: int 
+	if nil?(a) then
+		return 0
+	else
+		int maximaSumaDerecha ← maximaSumaCamino(der(a))
+		int maximaSumaIzquierda ← maximaSumaCamino(izq(a))
+		int maximaSumaDesdeRaiz ← raiz(a) + sumaMaximaDeRaiz(der(a)) + sumaMaximaDeRaiz(izq(a))
+		return max(maximaSumaDerecha, maximaSumaIzquierda, maximaSumaDesdeRaiz)
+	endif
+
+
+function sumaMaximaDeRaiz(in a: ab) ← res: int 
+	
+end function

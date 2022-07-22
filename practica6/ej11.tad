@@ -1,0 +1,22 @@
+Interfaz:
+	iubicar?(in A: arreglo(nat), in desde: nat, in hasta: nat, in e: nat) → res: nat
+		if desde + 1 = hasta then															// O(1)
+			res ← desde																					// O(1)
+		else
+			mitad ← (desde + hasta)/2 												  // O(1)
+			if aparece?(A, desde, mitad - 1, e) then						// O(sqrt(mitad-desde))
+				ubicar?(A, desde, mitad, e)												// O(T(n/2))	
+			else
+				ubicar?(A, mitad, hasta, e)												// O(T(n/2))
+			fi
+		fi
+
+				O(1)   								si n = 1
+T(n) =  
+			  T(n/2) + sqrt(n)			si n > 1
+
+f(n) = sqrt(n)
+
+si tomamos ω = 1/2 > 0 → f(n) ∈ Ω(n^(log2(1)+ω)) y si tomamos α = 3/4 < 1, se cumple que ∀ n ≥ n₀ = 0, sqrt(n/2) ≤ α*sqrt(n) 
+por lo tanto, por el ítem 3 del teorema maestro T(n) ∈ Θ(n). 
+			 

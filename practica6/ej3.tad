@@ -1,0 +1,18 @@
+Interfaz:
+	ipotencia(in a: nat, in b: nat) → res: nat
+	if b = 1 then																		// O(1)
+		res ← a 																			// O(1)
+	else
+		if b mod 2 = 0 then														// O(1)
+			potencia(a, b/2) * potencia(a, b/2)					// O(T(b/2))
+		else
+			a * potencia(a, b/2) * potencia(a, b/2)			// O(T(b/2))
+		endif
+	endif
+
+
+					T(b/2) + O(1)   en otro caso
+T(n) = 
+					O(1)            si n = 1 
+
+Como es el caso 2 del teorema maestro tenemos que T(n) = O(log(n))

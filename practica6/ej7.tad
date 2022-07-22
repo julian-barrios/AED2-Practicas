@@ -1,0 +1,24 @@
+Interfaz:
+	iParejasDesordenadas(in A: arreglo(nat)) → res: nat 
+		return #parejasDesordenadasAux(A, 0, tam(A))
+---
+	i#parejasDesordenadasAux(in A: arreglo(nat), in desde: nat, in hasta: nat) → res: nat 
+		if desde = hasta then
+			res ← 0
+		else
+			nat medio ← (desde + hasta)/2
+			nat sumaIzq ← #parejasDesordenadasAux(A, desde, medio)
+			nat sumaDer ← #parejasDesordenadasAux(A, medio + 1, hasta)
+			nat i ← desde
+			nat j ← medio
+			nat sumaMedio ← 0
+			while i < medio do
+				while j < hasta && A[i] > A[j] do
+					j ← j + 1
+				end while
+				sumaMedio ← sumaMedio + (j - medio)
+				i ← i + 1
+			end while
+			merge(A[0..medio], A[medio+1..hasta])
+			res ← (sumaIzq + sumaMedio + sumaDer)
+		end if

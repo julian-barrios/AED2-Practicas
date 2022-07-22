@@ -1,0 +1,32 @@
+Interfaz:	
+	Algoritmos:
+		iIesimoMerge((in A: arreglo(nat), in B: arreglo(nat), in desdeA: nat, in hastaA: nat, in desdeB: nat, in hastaB: nat, in i: nat) -> res: nat
+			if desdeA + 1 = hastaA then
+				res ← B[i-1]
+			else if desdeB + 1 = hastaB then
+				res ← A[i-1]
+			else
+				mitadA ← (desdeA + hastaA)/2
+				mitadB ← (desdeB + hastaB)/2
+				if mitadA + mitadB < i then
+					if A[mitadA] < B[mitadB] then
+						IesimoMerge(A, B, mitadA + 1, hastaA, desdeB, hastaB, i - mitadB - 1)
+					else
+						IesimoMerge(A, B, desdeA, hastaA, mitadB + 1, hastaB, i - mitadA - 1)
+					fi
+				else
+					if A[mitadA] < B[mitadB] then
+						IesimoMerge(A, B, desdeA, hastaA, desdeB, mitadB, i)
+					else
+						IesimoMerge(A, B, desdeA, mitadA, desdeB, hastaB, i)
+					fi
+				fi
+			fi
+			
+
+			
+			
+			
+			
+			
+ 

@@ -1,0 +1,21 @@
+Interfaz:
+	iIndiceIgualAValor(in A: arreglo(nat), in desde: nat, in hasta: nat) → bool
+	if desde + 1 == hasta then																						// O(1)
+		if A[desde] = desde then																						// O(1)
+			return true                                                       // O(1)
+		else
+			return false																											// O(1)	
+	else
+		int mitad = (desde + hasta)/2                                       // O(1)
+	 	if A[mitad] > mitad then 																						// O(1) 
+			return indiceIgualAValor(A, desde, mitad)													// O(T(n/2))
+		else 																				
+			return indiceIgualAValor(A, mitad, hasta)													// O(T(n/2))	
+		endif
+	endif
+																					
+				T(n/2) + O(1)   en otro caso
+T(n) = 
+				O(1)            si n = 1 
+
+Como es el caso 2 del teorema maestro tenemos que T(n) = O(log(n))

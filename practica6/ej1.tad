@@ -1,0 +1,18 @@
+Interfaz:
+		iMasALaIzquierda(in A: arreglo(nat), in desde: nat, in hasta: nat) → bool 
+			if desde + 1 == hasta then																							  // O(1)
+				return True																													   	// O(1)
+			else
+				nat mitad ← (desde + hasta)/ 2
+				izqEsIzquierdista ← masALaIzquierda(A, desde, mitad)                    // O(T(n/2))
+				derEsIzquierdista ← masALaIzquierda(A, mitad, hasta)										// O(T(n/2))
+				izquierdaSumaMas ← (suma(A, desde, mitad) > suma1(A, mitad, hasta))     // O(n)
+				return izqEsIzquierdista && derEsIzquierdista && izquierdaSumaMas       // O(1)
+			endif
+
+
+				2*T(n/2) + O(n) si n > 1 
+T(n) = 
+				O(1)            si n = 1 
+	
+Como es el caso 2 del teorema maestro tenemos que T(n) = O(n log(n))
