@@ -1,0 +1,29 @@
+Interfaz:
+	iordenarArregloDeTuplas(in A: arreglo(⟨nat, string⟩)) → res: arreglo(⟨nat, string⟩) 
+		mergeSortNat(A)                                                                     // O(n log(n))
+		diccTrie(lista(nat)) natsPorPalabra ← Vacio                                         // O(1)
+		for i ← 0, i < n do																			                            // O(n)	
+			if Definido?(natsPorPalabra, A[i]₂) then                                          // O(1)
+				agregarAtrás(obtener(natsPorPalabra, A[i]₂), A[i]₁)                             // O(l) 
+			else
+				Definir(natsPorPalabra, A[i]₂, Vacia())                                          // O(l)
+				agregarAtrás(obtener(natsPorPalabra, A[i]₂), A[i]₁)  														 // O(l)
+			endif
+		endfor
+		arreglo(⟨nat, string⟩) res ← arreglo(n)                                             // O(n)
+		iterador itTrie ← crearIt(natsPorPalabra)																						// O(1)			
+		while(HaySiguiente(itTrie))                                                         // O(n)
+			iterador itLista ← crearIt(SiguienteSignificado(itTrie))   				                // O(1)
+			while HaySiguiente(itLista) do                                                   	// O(#nats por string)
+				res[i] ← ⟨Siguiente(itLista), SiguienteClave(itTrie)⟩ 												  // O(1) 
+				Avanzar(itLista)                                                                // O(1)
+				i ← i + 1																																				// O(1)	
+			endwhile
+			Avanzar(itTrie)                                                                   // O(1)
+			i ← i + 1 																																				// O(1)		
+		endwhile
+		return res
+
+// Complejidad Total = O(n log(n) + nl)
+
+// En el caso b, como los naturales están acotados se los puede ordenar usando bucket sort en O(n) con lo cual la complejidad quedaría O(n + nl) = O(nl)

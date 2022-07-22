@@ -1,0 +1,23 @@
+
+Interfaz:
+		iordPorFrec(in a: arreglo(nat)) -> res: arreglo(nat)
+			mergeSort(a)																					// O(n log(n))
+			listaFrec ← Vacia()																		// O(1)							
+			itLista ← agregarAtras(listFrec, ⟨a[i], 1⟩)						// O(1)
+			for i ← 0, i < tam(a) - 1, i++												// O(n)
+				if a[i] = a[i+1] then																// O(1)
+					siguiente(itLista).second + 1 										// O(1)
+				else
+					itLista ← agregarAtras(listFrec, ⟨a[i+1], 1⟩)			// O(1)
+				fi
+			end for
+			arregloFrec ← deListaAArreglo(listaFrec)							// O(n)
+			mergeSortAux(arregloFrec)															// O(n log(n))
+			for i ← 0, i < tam(arregloFrec), i++									// O(n)
+				for j ← 0, j < arregloFrec[i].second, i++
+					res[i] ← arregloFrec[i].first
+				end for 
+			end for
+
+
+Complejidad total = O(n log(n))

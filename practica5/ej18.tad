@@ -1,0 +1,26 @@
+Interfaz:
+		iordenarArregloConElementosMenoresAN(in a: arreglo(nat)) -> res: estr
+		res ← crearArreglo(n)  		 // O(n)
+		for i ← 0, i < n, i++			 // O(n)	
+			res[i] ← ₀							 // O(1)		
+		end for
+		for i ← 0, i < n, i++			 // O(n)
+			res[a[i]] ← a[i] 				 // O(1)
+		end for
+		
+		iordenarArregloConElementosMenoresAN2(in a: arreglo(nat)) -> res: estr
+		for i ← 0, i < n, i++			 // O(n)
+			cambiarABaseN(a[i])			 // O(1)?
+		end for
+		res ← crearArreglo(n)  		 // O(n)
+		for i ← 0, i < n, i++			 // O(n)	
+			res[i] ← 0 							 // O(1)
+		end for
+		for i ← 0, i < n, i++			 // O(n)
+			res[a[i]%10] ← a[i] 		 // O(1)
+		end for
+		for i ← 0, i < n, i++			 // O(n)
+			res[a[i]/10] ← a[i] 		 // O(1)
+		end for
+
+		---

@@ -1,0 +1,23 @@
+Interfaz:
+		iordenarPlanilla(inout p: planilla) 
+			arregloDeGeneros ← crearArreglo(2) 																							// O(1)
+			llenarArregloDeListasVacias(arregloDeGeneros)																		// O(n)	
+			for i ← 0, i < tam(p), i++																											// O(n)
+				if p[i].gen = F then																													// O(1)
+					agregarAtras(arregloDeGeneros[0], p[i])																			// O(1)
+				else
+					agregarAtras(arregloDeGeneros[1], p[i])																			// O(1)
+				fi 
+			end for
+			concatenar(arregloDeGeneros[0], arregloDeGeneros[1])														// O(n)
+			arregloDeNotas ← crearArreglo(10)																								// O(1)
+			llenarArregloDeListasVacias(arregloDeNotas)																			// O(n)	
+			for i ← 0, i < tam(arregloDeNotas), i++
+				agregarAtras(arregloDeNotas[arregloDeGeneros[i].third], arregloDeGeneros[i])  // O(1)
+			end for
+			for i ← 0, i < tam(arregloDeNotas)-1, i++																				// O(1)		
+				concatenar(arregloDeNotas[i], arregloDeNotas[i+1]) 														// O(n)	
+			end for
+			for i ← 0, i < tam(arregloDeNotas), i++																					// O(n)
+				p[i] ← arregloDeNotas[i] 																											// O(1)	
+			end for

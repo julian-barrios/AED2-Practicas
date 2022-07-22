@@ -1,0 +1,22 @@
+
+Interfaz:
+		iordenarEscaleras(in a: arreglo(nat)) -> res: arreglo(nat)														
+		listaEscaleras ← Vacia()															// O(1)							
+		itLista ← agregarAtras(listFrec, ⟨a[i], 1⟩)						// O(1)
+		for i ← 0, i < tam(a) - 1, i++												// O(n)
+			if a[i+1] = a[i] + 1 then														// O(1)
+				siguiente(itLista).second + 1 										// O(1)
+			else
+				itLista ← agregarAtras(listFrec, ⟨a[i+1], 1⟩)			// O(1)
+			fi
+		end for
+		arregloEscaleras ← deListaAArreglo(listaArreglo)			// O(n)
+		mergeSortAux1(arregloEscaleras)												// O(n log(n))  ordeno por valor		
+		mergeSortAux2(arregloEscaleras)												// O(n log(n))  ordeno por tamaño de escalera en orden decreciente 
+		for i ← 0, i < tam(arregloEscaleras), i++							// O(n)
+			elem ← arregloEscaleras[i].first									  // O(n)
+			for j ← 0, j < arregloFrec[i].second, i++
+				res[i] ← elem
+				elem ← elem + 1
+			end for 
+		end for

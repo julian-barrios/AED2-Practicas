@@ -1,0 +1,36 @@
+Interfaz:
+	iordenarAyB(in A: arreglo(nat), in B: arreglo(nat)) → res: arreglo(nat)
+		aparicionesEnA ← arreglo(n')																									// O(n')
+		j ← 0 																																				// O(1)	
+		for i ← 0, i < n - 1 do																												// O(n)
+			repetidos ← Vacia()																													// O(1)
+			nat contador ← 0 																														// O(1)
+			while i < n && A[i] == A[i + 1] do																					// O(1)
+				contador ← contador + 1                                       						// O(1)
+				i ← i + 1  																									  						// O(1)		
+			endwhile
+			agregarAtrás(repetidos, ⟨A[i], contador⟩)											  						// O(1)			
+			aparicionesEnA[j] ← repetidos																	  						// O(1)				
+			j ← j + 1
+		endfor
+		mergeSortPrimeraComponente(aparicionesEnA)																		// O(n' log(n'))	
+		aparicionesEnAOrdenado ← agruparRepeticiones(aparicionesEnA)									// O(n')
+		AOrdSinRepYB ← concatenar(aparicionesEnAOrdenado, B)													// O(n'+ m)
+		mergeSort(AOrdSinRepYB)																												// O((n'+ m)*log(n'+ m))	
+		AOrdSinRepYBPorFrec ← agruparPorFrec(AOrdSinRepYB)														// o(n'+ m)																											
+		while i < tam(aparicionesEnAOrdenado) do																			// O(n' + m)
+		if aparicionesEnAOrdenado[i].first = AOrdSinRepYBPorFrec[j].first then				// O(1)
+			AOrdSinRepYBPorFrec[j].second + aparicionesEnAOrdenado[i].second - 1        // O(1)
+			i ← i + 1 																																	// O(1)
+		else
+			j ← j + 1 																																	// O(1)	
+		fi
+		end while
+		res ← convertirEnArreglo(AOrdSinRepYBPorFrec)																	// O(n + m)	
+		
+		
+// aparicionesEnAOrdenado es un arreglo de tuplas con primera componente el valor y segunda componente la frecuencia, ordenado por valor sin repeticiones de valor
+// AOrdSinRepYB es un arreglo de naturales que es la concatenación de las primeras componentes de aparicionesEnAOrdenado y B
+// AOrdSinRepYBPorFrec es un arreglo de tuplas con la primera componente el valor y la segunda la frecuencia de AOrdSinRepYB
+
+		

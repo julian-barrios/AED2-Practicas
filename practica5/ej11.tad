@@ -1,0 +1,7 @@
+Interfaz:
+		iordenarArregloConElementosAcotados(in a: arreglo(nat)) -> res: arreglo(nat)
+			arreglo(lista(nat)) arregloDeListas ← crearArreglo(k)  // O(1)
+			for i ← 0, i < n, i++																	 // O(1)
+				AgregarAtras(arregloDeListas(a[i]), a[i])						 // O(1)
+			end for
+			res ← concatenarListasYPasarAArreglo(arregloDeListas)  // O(n)
