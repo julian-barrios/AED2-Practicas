@@ -1,0 +1,46 @@
+Representación:
+	torneo se representa con estr donde 
+		estr es tupla ⟨	equipos:	diccAVL(equipo, itLista),
+										ranking: 	lista(tupla ⟨pos: nat, puntaje: nat, cantEquipos: nat⟩)⟩
+
+---
+Interfaz:
+		---		
+	Algoritmos del módulo:
+		iPuntos(in t: torneo, in e: equipo) -> res: nat
+			itLista it ← Significado(t.equipos, e)
+			nat res ← Siguiente(it)₂
+		---
+		iPos(in t: torneo, in e: equipo) → res: nat
+			itLista it ← Significado(t.equipos, e)
+			nat res ← Siguiente(it)₁
+		---
+		iRegPartido(inout t: torneo, in e: equipo)
+			itLista it ← Significado(t.equipos, e)
+			tupla ⟨nat, nat, nat⟩ nodoActual ← Siguiente(it)
+			if nodoActual.cantEquipos = 1 then
+				EliminarSiguiente(it)
+			else
+				Siguiente(it).cantEquipos ← Siguiente(it).cantEquipos - 1
+				Siguiente(it).pos ← Siguiente(it).pos + 1
+			fi
+			if HayAnterior(it) ∧L Anterior(it).puntaje = nodoActual.puntaje + 1 then
+				Anterior(it).cantEquipos ← Anterior(it).cantEquipos + 1
+				Retroceder(it)
+				Definir(t.equipos, e, it)
+			else
+				tupla ⟨nat, nat, nat⟩ nuevoNodo ← ⟨nodoActual.pos, nodoActual.puntaje + 1, 1⟩
+				AgregarComoAnterior(it, nuevoNodo)
+				Definir(t.equipos, e, nuevoNodo)
+			fi
+		
+		--- 
+		
+		
+		
+		
+		
+		
+		
+		
+		

@@ -1,0 +1,21 @@
+Representación:
+	sueco se representa con estr donde 
+		estr es tupla ⟨#boletosPorIntervalo: diccAVL(periodo: nat, sumaAcumuladaDeBoletos: nat⟩
+
+Interfaz:.	
+	Algoritmos del módulo:
+		iagregarBoleto(inout s: sueco, in d: nat, int p: nat)
+			sumaAcumuladaHastaD ← obtener(s, d)
+			itDicc ← crearIt(s.boletosPorIntervalo)
+			while HaySiguiente(itDicc) ∧ itDicc.clave <= d do
+				itDicc.Significado ← itDicc.Significado + 1
+				Avanzar(itDicc)
+			end while
+
+		---
+		
+		i#intervalo(in s: sueco, in d: nat, in h: nat) → res: nat
+		sumaAcumuladaHastaD ← obtener(s, d)
+		sumaAcumuladaHastaH ← obtener(s, h)
+		res ← sumaAcumuladaHastaD - sumaAcumuladaHastaH
+ 
